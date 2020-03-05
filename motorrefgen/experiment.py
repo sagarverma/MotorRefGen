@@ -16,9 +16,9 @@ class Experiment(object):
 
         if self.torque_time[-1] > self.speed_time[-1]:
             self.speed_time[-1] = self.torque_time[-1]
-        elif speed_time[-1] > self.torque_time[-1]:
+        elif self.speed_time[-1] > self.torque_time[-1]:
             self.torque_time[-1] = self.speed_time[-1]
-            
+
     def _get_ramp(self):
         if self.config.integral:
             ramp = random.choice(self.config.ramps)
