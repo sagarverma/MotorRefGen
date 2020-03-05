@@ -1,0 +1,5 @@
+setup.py
+motorrefgen.egg-info/PKG-INFO
+motorrefgen.egg-info/SOURCES.txt
+motorrefgen.egg-info/dependency_links.txt
+motorrefgen.egg-info/top_level.txt
