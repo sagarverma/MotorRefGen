@@ -39,10 +39,10 @@ class Test_ExperimentConfig(object):
         config = ExperimentConfig(integral=False)
         params = config.get_config_json()
         assert isinstance(params, dict)
-        assert len(params.keys()) == 6
+        assert len(params.keys()) == 7
 
     def test__get_config_json_integral(self):
         config = ExperimentConfig(integral=True)
         params = config.get_config_json()
         assert isinstance(params, dict)
-        assert len(params.keys()) == 10
+        assert len(params.keys()) == 11
