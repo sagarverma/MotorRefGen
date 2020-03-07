@@ -1,5 +1,7 @@
 import random
 
+import numpy as np
+
 class Experiment(object):
     def __init__(self, config):
         """
@@ -107,3 +109,48 @@ class Experiment(object):
                                                self.config.speed_range[1],
                                                self.speed_states)
         return self._continuous_trajectory(speed_points)
+
+    def _get_true_values(self):
+        """
+        Convert reference torque in % of nominal to Nm and
+        reference speed in Hz to rad/s
+        """
+        return np.asarray(self.reference_torque) * 25 / 100.,
+                np.asarray(self.reference_speed) * 2 * np.pi
+
+    def _set_simulation_output(self, data):
+        """
+        Get all simulated quantities from simulator returned data and
+        set them as data member of this class. Also interpolate reference values
+        to match simulated data.
+        """
+        data = np.asarray(data)
+        self.voltage_d = data[:, 0]
+        self.voltage_q = data[:, 1]
+        self.current_d = data[:, 2]
+        self.current_q = data[:, 3]
+        self.torque = data[:, 4]
+        self.speed = data[:, 6]
+        self.statorPuls = data[:, 6]
+        self.time = data[:, 7]
+
+        reference_torque, reference_speed = self._get_true_values()
+        self.reference_torque_interp = np.interp(self.time, self.torque_time, reference_torque)
+        self.reference_speed_interp = np.interp(self.time, self.speed_time, reference_speed)
+
+    def simulate(self, simulator):
+        """
+        Simulate using passed model.
+        """
+        reference_torque, reference_speed = self._get_true_values()
+
+        reference_torque = str(list(reference_torque)).replace(',', '')
+        reference_speed = str(list(reference_speed)).replace(',', '')
+        torque_time = str(list(self.torque_time)).replace(',', '')
+        speed_time = str(list(self.speed_time)).replace(',', '')
+        sim_time = str(self.speed_time[-1])
+
+        data = simulator.sim(reference_speed, reference_torque,
+                            speed_time, torque_time, sim_time)
+
+        self._set_simulation_output(data)
