@@ -53,6 +53,8 @@ class Experiment(object):
             duration = random.randint(*self.config.static_duration)
             time.append(time[-1] + duration + ramp)
 
+        time = time[:-1]
+
         return time, reference
 
     def _continuous_trajectory(self, points):
@@ -115,7 +117,7 @@ class Experiment(object):
         Convert reference torque in % of nominal to Nm and
         reference speed in Hz to rad/s
         """
-        return np.asarray(self.reference_torque) * 25 / 100.,
+        return np.asarray(self.reference_torque) * 25 / 100., \
                 np.asarray(self.reference_speed) * 2 * np.pi
 
     def _set_simulation_output(self, data):
@@ -138,9 +140,9 @@ class Experiment(object):
         self.reference_torque_interp = np.interp(self.time, self.torque_time, reference_torque)
         self.reference_speed_interp = np.interp(self.time, self.speed_time, reference_speed)
 
-    def simulate(self, simulator):
+    def _stringify(self):
         """
-        Simulate using passed model.
+        Convert simulation input to strings to pass it to simulator.
         """
         reference_torque, reference_speed = self._get_true_values()
 
@@ -150,7 +152,13 @@ class Experiment(object):
         speed_time = str(list(self.speed_time)).replace(',', '')
         sim_time = str(self.speed_time[-1])
 
-        data = simulator.sim(reference_speed, reference_torque,
-                            speed_time, torque_time, sim_time)
+        print (reference_torque, reference_speed, torque_time, speed_time, sim_time)
+        return reference_speed, reference_torque, \
+                speed_time, torque_time, sim_time
 
+    def simulate(self, simulator):
+        """
+        Simulate using passed model.
+        """
+        data = simulator.sim(*self._stringify())
         self._set_simulation_output(data)
