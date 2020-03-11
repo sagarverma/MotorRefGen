@@ -46,3 +46,11 @@ class Test_ExperimentConfig(object):
         params = config.get_config_json()
         assert isinstance(params, dict)
         assert len(params.keys()) == 11
+
+    def test_set_config_from_json_nointegral(self):
+        config = ExperimentConfig(integral=False)
+        params = config.get_config_json()
+        params['torque_range'] = [0, 10]
+        config.set_config_from_json(params)
+
+        assert config.torque_range == [0, 10]
