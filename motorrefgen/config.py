@@ -17,3 +17,7 @@ class ExperimentConfig(object):
 
     def get_config_json(self):
         return {key:value for key, value in self.__dict__.items() if not key.startswith('__') and not callable(key)}
+
+    def set_config_from_json(self, config):
+        for k in config.keys():
+            self.__dict__[k] = config[k]
