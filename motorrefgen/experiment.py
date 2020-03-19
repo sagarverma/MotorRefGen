@@ -19,7 +19,7 @@ class Experiment(object):
             self.speed_time, self.reference_speed = self._gen_integral_speed_trajectory()
         else:
             self.torque_time, self.reference_torque = self._gen_continuous_torque_trajectory()
-            self.speed_time, self.refernce_speed = self._gen_continuous_speed_trajectory()
+            self.speed_time, self.reference_speed = self._gen_continuous_speed_trajectory()
 
         if self.torque_time[-1] > self.speed_time[-1]:
             self.speed_time[-1] = self.torque_time[-1]
