@@ -66,7 +66,7 @@ class Experiment(object):
 
         for point in points:
             ramp = np.random.uniform(self.config.ramp_range[0],
-                                      self.config.ramp.range[1], 1)[0]
+                                      self.config.ramp_range[1], 1)[0]
             duration = np.random.uniform(self.config.static_duration[0],
                                          self.config.static_duration[1], 1)[0]
             time.append(time[-1] + ramp + duration)
