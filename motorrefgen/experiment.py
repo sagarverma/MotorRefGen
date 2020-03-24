@@ -162,3 +162,20 @@ class Experiment(object):
         """
         data = simulator.sim(*self._stringify())
         self._set_simulation_output(data)
+
+
+    def get_simulation_data(self):
+        return {'voltage_d': self.voltage_d,
+                'voltage_q': self.voltage_q,
+                'current_d': self.current_d,
+                'current_q': self.current_q,
+                'torque': self.torque,
+                'speed': self.speed,
+                'statorPuls': self.statorPuls,
+                'time': self.time,
+                'reference_torque_interp': self.reference_torque_interp,
+                'reference_speed_interp': self.reference_speed_interp,
+                'reference_torque': self.reference_torque,
+                'reference_speed': self.reference_speed,
+                'torque_time': self.torque_time,
+                'speed_time': self.speed_time}

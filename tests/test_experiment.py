@@ -74,4 +74,15 @@ class Test_Experiment(object):
         assert len(experiment.time) == len(experiment.reference_speed_interp)
         assert len(experiment.reference_speed_interp) == len(experiment.reference_torque_interp)
 
-        
+
+    def test__get_simulation_data(self):
+        config = ExperimentConfig(integral=True, simulate=True)
+        experiment = Experiment(config)
+
+        config = SimConfig()
+        py2mat = Py2Mat(config)
+
+        experiment.simulate(simulator=py2mat)
+        simulation_data = experiment.get_simulation_data()
+
+        assert len(simulation_data.keys()) == 14
