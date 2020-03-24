@@ -26,6 +26,17 @@ class Experiment(object):
         elif self.speed_time[-1] > self.torque_time[-1]:
             self.torque_time[-1] = self.speed_time[-1]
 
+    def set_manual_reference(self, reference):
+        """
+        Set reference values manually instead of randomly generating
+        """
+        self.torque_states = []
+        self.speed_states = []
+        self.reference_speed = reference['reference_speed']
+        self.reference_torque = reference['reference_torque']
+        self.speed_time = reference['speed_time']
+        self.torque_time = reference['torque_time']
+
     def _get_ramp(self):
         """
         Get a ramp with random slope.

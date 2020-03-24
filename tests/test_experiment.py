@@ -86,3 +86,18 @@ class Test_Experiment(object):
         simulation_data = experiment.get_simulation_data()
 
         assert len(simulation_data.keys()) == 14
+
+    def test__set_manual_reference(self):
+        reference = {'reference_speed': [0,0,50,50],
+                     'speed_time': [1,2,3,4],
+                     'reference_torque': [0,0,0,0],
+                     'torque_time': [1,2,3,4]}
+        config = ExperimentConfig(integral=True, simulate=False)
+        experiment = Experiment(config)
+
+        experiment.set_manual_reference(reference)
+
+        assert experiment.reference_speed == [0,0,50,50]
+        assert experiment.reference_torque == [0,0,0,0]
+        assert experiment.speed_time == [1,2,3,4]
+        assert experiment.torque_time == [1,2,3,4]
