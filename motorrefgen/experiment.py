@@ -142,14 +142,14 @@ class Experiment(object):
         self.voltage_q = data[:, 1]
         self.current_d = data[:, 2]
         self.current_q = data[:, 3]
-        self.torque = data[:, 4]
-        self.speed = data[:, 6]
-        self.statorPuls = data[:, 6]
+        self.torque = data[:, 4] / 25. * 100
+        self.speed = data[:, 5] / (2 * np.pi)
+        self.statorPuls = data[:, 6]  / (2 * np.pi)
         self.time = data[:, 7]
 
         reference_torque, reference_speed = self._get_true_values()
-        self.reference_torque_interp = np.interp(self.time, self.torque_time, reference_torque)
-        self.reference_speed_interp = np.interp(self.time, self.speed_time, reference_speed)
+        self.reference_torque_interp = np.interp(self.time, self.torque_time, reference_torque) / 25. * 100
+        self.reference_speed_interp = np.interp(self.time, self.speed_time, reference_speed) / (2 * np.pi)
 
     def _stringify(self):
         """
