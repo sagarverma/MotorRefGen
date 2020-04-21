@@ -10,6 +10,40 @@ from motorsim.simconfig import SimConfig
 from motorsim.simulators.conn_python import Py2Mat
 
 
+def csv2intlst(csv_str):
+    """Parse comma seperated int string to list of ints.
+
+    Parameters
+    ----------
+    csv_str : str
+        Comma seperated integers.
+
+    Returns
+    -------
+    list
+        Description of returned object.
+
+    """
+    return list(map(int, csv_str.split(',')))
+
+
+def csv2floatlst(csv_str):
+    """Parse comma seperated float string to list of floats.
+
+    Parameters
+    ----------
+    csv_str : str
+        Comma seperated real numbers.
+
+    Returns
+    -------
+    list
+        Description of returned object.
+
+    """
+    return list(map(float, csv_str.split(',')))
+
+
 def get_arg_parse():
     """Prase command line arguments.
 
@@ -23,10 +57,17 @@ def get_arg_parse():
                     description="""Generate training and validation data.""")
     parser.add_argument('--save_dir', required=True, type=str)
     parser.add_argument('--set', type=str, required=True, help='train/val')
-    parser.add_argument('--sim_rate', type=float, required=True,
-                        help='Simulation rate')
     parser.add_argument('--samples', type=int, required=True,
                         help='Number of samples.')
+
+    parser.add_argument('--sim_rate', type=float, required=True,
+                        help='Simulation rate')
+    parser.add_argument('--static_states', type=csv2intlst, required=True,
+                        help='Static states bound')
+    parser.add_argument('--static_duration', type=csv2intlst, required=True,
+                        help='Static duration bound')
+    parser.add_argument('--ramp_range', type=csv2floatlst, required=True,
+                        help='Ramp range bound')
 
     args = parser.parse_args()
     return args
@@ -48,6 +89,9 @@ def generate(sim_no, opt):
 
     """
     config = ExperimentConfig(integral=False, simulate=True)
+    config.set_config_from_json({'static_states': opt.static_states,
+                                 'static_duration': opt.static_duration,
+                                 'ramp_range': opt.ramp_range})
     experiment = Experiment(config)
 
     simconfig = SimConfig()
