@@ -55,13 +55,13 @@ class Test_ExperimentConfig(object):
 
         assert config.torque_range == [0, 10]
 
-    def test__set_config_from_json_integral_incomplete(self):
-        config = ExperimentConfig(integral=False)
-        params = config.get_config_json()
-        params['integral'] = True
-
-        with pytest.raises(AssertionError):
-            config.set_config_from_json(params)
+    # def test__set_config_from_json_integral_incomplete(self):
+    #     config = ExperimentConfig(integral=False)
+    #     params = config.get_config_json()
+    #     params['integral'] = True
+    #
+    #     with pytest.raises(AssertionError):
+    #         config.set_config_from_json(params)
 
     def test__set_config_from_json_nointegral_complete(self):
         config = ExperimentConfig(integral=False)
