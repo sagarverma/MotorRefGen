@@ -44,7 +44,14 @@ class Experiment(object):
         if self.config.integral:
             ramp = random.choice(self.config.ramps)
         else:
-            ramp = np.random.uniform(self.config.ramp_range[0], self.config.ramp_range[1], 1)[0]
+            # ramp = np.random.uniform(self.config.ramp_range[0], self.config.ramp_range[1], 1)[0]
+            print ('test')
+            a = self.config.ramp_range[0]
+            b = self.config.ramp_range[1]
+            values = np.random.exponential(0.5, 500)
+            nramps = a + (values - values.min()) * ((b - a) /
+                     (values.max() - values.min()))
+            ramp = np.random.choice(nramps)
 
         return ramp
 
