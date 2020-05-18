@@ -44,7 +44,13 @@ class Experiment(object):
         if self.config.integral:
             ramp = random.choice(self.config.ramps)
         else:
-            ramp = np.random.uniform(self.config.ramp_range[0], self.config.ramp_range[1], 1)[0]
+            # ramp = np.random.uniform(self.config.ramp_range[0], self.config.ramp_range[1], 1)[0]
+            a = self.config.ramp_range[0]
+            b = self.config.ramp_range[1]
+            values = np.random.exponential(0.5, 500)
+            nramps = a + (values - values.min()) * ((b - a) /
+                     (values.max() - values.min()))
+            ramp = np.random.choice(nramps)
 
         return ramp
 
@@ -56,7 +62,7 @@ class Experiment(object):
         reference = []
 
         for point in points:
-            ramp = random.choice(self.config.ramps)
+            ramp = self._get_ramp()
             duration = random.randint(*self.config.static_duration)
             time.append(time[-1] + ramp + duration)
             reference.append(point)
@@ -76,8 +82,7 @@ class Experiment(object):
         reference = []
 
         for point in points:
-            ramp = np.random.uniform(self.config.ramp_range[0],
-                                      self.config.ramp_range[1], 1)[0]
+            ramp = self._get_ramp()
             duration = np.random.uniform(self.config.static_duration[0],
                                          self.config.static_duration[1], 1)[0]
             time.append(time[-1] + ramp + duration)
@@ -163,7 +168,6 @@ class Experiment(object):
         speed_time = str(list(self.speed_time)).replace(',', '')
         sim_time = str(self.speed_time[-1])
 
-        print (reference_torque, reference_speed, torque_time, speed_time, sim_time)
         return reference_speed, reference_torque, \
                 speed_time, torque_time, sim_time
 
