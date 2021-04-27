@@ -2,6 +2,7 @@ import random
 
 import numpy as np
 
+
 class Experiment(object):
     def __init__(self, config):
         """
