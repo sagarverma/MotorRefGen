@@ -28,7 +28,6 @@ python motorrefgen/gen_custom_pkls.py \
 --reference_speed=0,0,70,70,-70,-70 --reference_torque=0,0,0,0,0,0 \
 --sim_rate=0.004 --benchmark_name=bench5
 
-
 python motorrefgen/gen_custom_pkls.py \
 --save_dir=../../datasets/Data_27012021_noisy/benchmark \
 --speed_time=0,1,1.004,5,55,60 --torque_time=0,1,1.004,5,55,60 \
